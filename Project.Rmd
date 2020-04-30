@@ -1,0 +1,43 @@
+---
+title: "project"
+output:
+  pdf_document: default
+  html_document: default
+editor_options:
+  chunk_output_type: console
+---
+
+```{r setup}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+```{r}
+states <- read_csv("~/states.csv")
+data_1_ <- read_csv("~/data (1).csv")
+h08_2 <- read_csv("~/h08 2.csv")
+Heart_Disease_Mortality_by_State_3 <- read_csv("~/Heart Disease Mortality by State 3.csv")
+states1<-full_join(states,data_1_,by="State")
+states2<-full_join(states1,h08_2,by="State")
+states3<- full_join(states2, Heart_Disease_Mortality_by_State_3, by="Code")
+```
+
+```{r}
+states3 %>%
+  rename(Income="2018")
+states3[,"Income"]<-states3[,5]
+ggplot(data=states3, mapping = aes(x= Income, y= LE))+geom_point()+ylab("Life Expectancy")
+ggplot(data = states3, mapping= aes(x=Income, y= RATE))+geom_point()+ylab("Heart Disease Cases per 100,000 people")
+```
+
+
+There is a very strong positive correlation between income and life expectancy. There is a very strong negative correlation between income and rates of heart disease. The higher prevalence of heart disease in lower income communities is likely a factor in life expectancy being lower for poorer communities.
+
+
+
+
+
+
+
+
+
