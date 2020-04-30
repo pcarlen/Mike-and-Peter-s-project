@@ -28,7 +28,6 @@ states3 %>%
 states3[,"Income"]<-states3[,5]
 ggplot(data=states3, mapping = aes(x= Income, y= LE))+geom_point()+ylab("Life Expectancy")
 ggplot(data = states3, mapping= aes(x=Income, y= RATE))+geom_point()+ylab("Heart Disease Cases per 100,000 people")
-ggplot(data=states3, mapping=aes(x= LE, y=RATE))+geom_point()
 ```
 
 
