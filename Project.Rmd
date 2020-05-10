@@ -29,11 +29,33 @@ states3[,"Income"]<-states3[,5]
 ggplot(data=states3, mapping = aes(x= Income, y= LE))+geom_point()+ylab("Life Expectancy")
 ggplot(data = states3, mapping= aes(x=Income, y= RATE))+geom_point()+ylab("Heart Disease Cases per 100,000 people")
 ggplot(data = states3, mapping=aes(x=LE, y=RATE))+geom_point()
+states3<-states3 %>%
+  rename(Abbreviation="Abbrev")
+ggplot(data = states6, mapping=aes(x=Income, y=diabetes_rate))
 ```
 
 
 There is a very strong positive correlation between income and life expectancy. There is a very strong negative correlation between income and rates of heart disease. The higher prevalence of heart disease in lower income communities is likely a factor in life expectancy being lower for poorer communities.
 
+```{r}
+Alzheimer_s_Disease_Mortality_by_State <- read_csv("//home/rstudio/courses/2019-20-semester2-mscs-264/Student B/carlen2/Mike-and-Peter-s-project/Alzheimer's Disease Mortality by State.csv")
+states4<-full_join(states3, Alzheimer_s_Disease_Mortality_by_State, by="Code")
+states4<-states4 %>%
+  rename(heart_disease_rate="RATE.x")
+states4<-states4 %>%
+  rename(alzheimers_rate="RATE.y")
+Chronic_Lower_Respiratory_Disease_Mortality_by_State1 <- read_csv("//home/rstudio/courses/2019-20-semester2-mscs-264/Student B/carlen2/Mike-and-Peter-s-project/Chronic Lower Respiratory Disease Mortality by State1.csv")
+states5<- full_join(states4, Chronic_Lower_Respiratory_Disease_Mortality_by_State1, by="Code")
+states5<-states5 %>%
+  rename(lower_respiratory_rate="RATE")
+```
+
+```{r}
+Diabetes_Mortality_by_State_2 <- read_csv("//home/rstudio/courses/2019-20-semester2-mscs-264/Student B/carlen2/Mike-and-Peter-s-project/Diabetes Mortality by State 2.csv")
+states6<- full_join(states5, Diabetes_Mortality_by_State_2, by= "Code")
+states6<- states6 %>%
+  rename(diabetes_rate= "RATE")
+```
 
 
 
