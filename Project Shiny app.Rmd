@@ -1,0 +1,71 @@
+---
+title: "derp"
+runtime: shiny
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+states6 <- read_csv("~/Mscs 264 S20/Submit Section B/Mike-and-Peter-s-project/states6.csv")
+```
+
+```{r,echo=FALSE}
+states6<-states6%>%
+  mutate(Region=ifelse(State=="Maine"|State=="New Hampshire"|State=="New York"|State=="Vermont"|State=="Pennsylvania"|State=="New Jersey"|State=="Massachusetts"|State=="Connecticut"|State=="Rhode Island","Northeast",ifelse(State=="Maryland"|State=="Delaware"|State=="West Virginia"|State=="Virginia"|State=="North Carolina"|State=="South Carolina"|State=="Kentucky"|State=="Tennessee"|State=="Georgia"|State=="Alabama"|State=="Mississippi"|State=="Florida"|State=="Louisiana"|State=="Arkansas"|State=="Texas"|State=="Oklahoma","South",ifelse(State=="Ohio"|State=="Michigan"|State=="Indiana"|State=="Illinois"|State=="Wisconsin"|State=="Missouri"|State=="Iowa"|State=="Minnesota"|State=="South Dakota"|State=="North Dakota"|State=="Nebraska"|State=="Kansas","Midwest",ifelse(State=="New Mexico"|State=="Colorado"|State=="Arizona"|State=="Utah"|State=="Wyoming"|State=="Montana"|State=="Idaho"|State=="Nevada"|State=="California"|State=="Oregon"|State=="Washington"|State=="Hawaii"|State=="Alaska","West","D.C.")))))
+
+```
+
+```{r,echo=FALSE}
+states6<- states6 %>%
+  rename("Income"='2018')
+titlePanel("Relationship Between Income and Various Health Metrics")
+```
+hello
+
+```{r, echo=FALSE}
+inputPanel(
+  selectInput(inputId="region", label="Choose a region:",choices=c("Northeast","South","Midwest","West")))
+
+renderPlot({
+  states6 %>%
+    filter(Region==input$region) %>%
+    ggplot()+geom_point(aes(x=diabetes_rate,y=Income,color=State, size=4))})
+renderPlot({states6 %>%
+  filter(Region==input$region) %>%
+  ggplot()+geom_point(aes(x=heartdisease,y=Income,color=State, size=4))})
+renderPlot({
+  states6 %>%
+    filter(Region==input$region) %>%
+    ggplot()+geom_point(aes(x=LE,y=Income,color=State, size=4),xlab="Life expectancy")})
+renderPlot({states6 %>%
+  filter(Region==input$region) %>%
+    ggplot(aes(x=alzheimers_rate,y=Income,color=State))+geom_point(size=4)})
+renderPlot({states6 %>%
+  filter(Region==input$region) %>%
+    ggplot()+geom_point(aes(x=lower_respiratory_rate,y=Income,color=State, size=4))})
+
+inputPanel(
+  selectInput(inputId="region", label="Choose a region:",choices=c("Northeast","South","Midwest","West")),
+  selectInput(inputId="region2", label="Choose a second region:",choices=c("Northeast","South","Midwest","West")))
+
+renderPlot({states6 %>%
+  filter(Region==input$region|Region==input$region2) %>%
+    ggplot()+geom_point(aes(x=diabetes_rate,y=Income,color=Region, size=4))})
+ renderPlot({states6 %>%
+  filter(Region==input$region|Region==input$region2) %>%
+  ggplot()+geom_point(aes(x=heartdisease,y=Income,color=Region, size=4))})
+renderPlot({
+  states6 %>%
+    filter(Region==input$region|Region==input$region2) %>%
+    ggplot()+geom_point(aes(x=LE,y=Income,color=Region, size=4),xlab="Life expectancy")})
+renderPlot({states6 %>%
+  filter(Region==input$region|Region==input$region2) %>%
+    ggplot()+geom_point(aes(x=alzheimers_rate,y=Income,color=Region, size=4))})
+renderPlot({states6 %>%
+  filter(Region==input$region|Region==input$region2) %>%
+    ggplot()+geom_point(aes(x=lower_respiratory_rate,y=Income,color=Region, size=4)) 
+  })
+```
+
+
